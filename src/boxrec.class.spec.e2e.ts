@@ -357,7 +357,9 @@ describe("class Boxrec (E2E)", () => {
                     });
 
                     it("should return the expiry date", () => {
-                        expect(enrolledBoxer[0].expires).toBe("2020-10-15");
+                        // todo a number of these tests need to be more flexible or look for current boxers
+                        // Canelo will retire and this test will be permanently broken
+                        expect(enrolledBoxer[0].expires).toMatch(/\d{4}-\d{2}-\d{2}/);
                     });
 
                     it("should return the id of the enrollment", () => {
@@ -403,10 +405,12 @@ describe("class Boxrec (E2E)", () => {
             });
 
             it("should include their role as a boxer", () => {
-                expect(getBoxer(352).role).toEqual([{
+                const roles: BoxrecRole[] = getBoxer(352).role;
+                const boxerRole: BoxrecRole = roles.find(item => item === BoxrecRole.proBoxer);
+                expect(boxerRole).toEqual({
                     id: 352,
                     name: BoxrecRole.proBoxer,
-                }]);
+                });
             });
 
             describe("bouts", () => {
